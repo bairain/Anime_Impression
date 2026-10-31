@@ -1,4 +1,4 @@
-# anime impression — 色带生成器
+# anime impression
 
 把电影 / 番剧的整条时间轴压缩成一张「色带海报」：逐帧提取画面主色调，按横向、纵向、斜向、同心圆、螺旋等排列方式渲染成图，再叠加片名、噪点与虚化，得到一张属于你自己的观影纪念海报。
 
@@ -78,9 +78,10 @@ python -m PyInstaller anime_impression.spec
 # 产物在 dist/anime_impression/，与 fonts/ 一起分发
 ```
 
-## 字体版权说明
+## 说明
 
 目录中「系统字体」条目依赖本机已安装字体（Windows 自带）；开源字体（思源系列、得意黑、霞鹜文楷等）遵循各自的开源协议，商用前请查阅对应授权条款。个别未随包分发的系统专有字体（MS Mincho、Meiryo 等）需自行安装对应语言包。
+项目灵感来源于：https://x.com/kousaka_rurii/status/1135969087866097664?s=46
 
 ## 许可证
 
