@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anime Impression · 色带生成器</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="brand-text">
+      <span class="mark">ANIME IMPRESSION</span>
+      <span class="brand-sub">色带生成器</span>
+    </span>
+  </div>
+  <div class="topbar-right">
+    <span class="engine" id="engineState"><i></i><span>连接中</span></span>
+  </div>
+</header>
+
+<main class="app">
+  <aside class="panel">
+    <div class="panel-scroll">
+
+      <section class="sec">
+        <header class="sec-head">
+          <span class="sec-num">01</span>
+          <h2>影片</h2>
+          <span class="sec-hint" id="videoCount">尚未添加</span>
+        </header>
+
+        <button id="addVideo" class="add-video" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <span>选择视频文件</span>
+          <small>MP4 · MKV · MOV · AVI · WebM · TS</small>
+        </button>
+
+        <div id="videoList" class="video-list"></div>
+
+        <div class="bulk-skip">
+          <div class="bulk-head">
+            <span>统一片头 / 片尾</span>
+            <small>一次设置，作用于序列中所有影片</small>
+          </div>
+          <div class="bulk-row">
+            <label>片头 <input type="number" id="bulkSkipStart" class="num" min="0" step="0.5" value="0"> 分</label>
+            <label>片尾 <input type="number" id="bulkSkipEnd" class="num" min="0" step="0.5" value="0"> 分</label>
+            <button type="button" id="applySkip" class="mini-btn">应用到全部</button>
+          </div>
+        </div>
+
+        <label class="switch-row" for="autoCrop">
+          <span class="switch"><input type="checkbox" id="autoCrop" checked><i></i></span>
+          <span class="switch-text"><b>自动裁去黑边</b><small>2.39:1 电影上下黑边会拉暗主色，默认开启</small></span>
+        </label>
+      </section>
+
+      <section class="sec">
+        <header class="sec-head">
+          <span class="sec-num">02</span>
+          <h2>色带</h2>
+          <span class="sec-hint" id="bandHint">—</span>
+        </header>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="interval">采样间隔</label>
+            <output id="intervalOut">2.0 秒 / 条</output>
+          </div>
+          <input type="range" id="interval" min="0.5" max="20" step="0.1" value="2">
+          <div class="scale"><span>0.5s</span><span>更密-更疏</span><span>20s</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="bandWidth">色带宽度上限</label>
+            <output id="bandWidthOut">2.0 px</output>
+          </div>
+          <input type="range" id="bandWidth" min="0.5" max="16" step="0.5" value="2">
+          <div class="scale"><span>0.5px</span><span>更细-更粗</span><span>16px</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-head"><label>排列方式</label></div>
+          <div class="layout-grid" id="layoutGrid">
+            <button type="button" class="layout-card active" data-layout="horizontal">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16M10 4v16M14 4v16M18 4v16"/></svg>
+              <span>横向</span>
+            </button>
+            <button type="button" class="layout-card" data-layout="vertical">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+              <span>纵向</span>
+            </button>
+            <button type="button" class="layout-card" data-layout="rings">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.5"/></svg>
+              <span>同心圆</span>
+            </button>
+            <button type="button" class="layout-card" data-layout="diagonal">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8l8-4M4 13l13-6.5M4 18l18-9M6 20l14-7M10 20l10-5"/></svg>
+              <span>斜向</span>
+            </button>
+            <button type="button" class="layout-card" data-layout="spiral">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a2 2 0 0 1 2 2 3.5 3.5 0 0 1-3.5 3.5A5 5 0 0 1 5.5 12 6.5 6.5 0 0 1 12 5.5 8 8 0 0 1 20 13.5 9.5 9.5 0 0 1 10.5 23"/></svg>
+              <span>螺旋</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="field" id="spiralField" hidden>
+          <div class="field-head">
+            <label for="spiralTurns">螺旋圈数</label>
+            <output id="spiralOut">5 圈</output>
+          </div>
+          <input type="range" id="spiralTurns" min="2" max="40" step="1" value="5">
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="resPreset">输出尺寸</label>
+            <output id="resOut">2560 × 800</output>
+          </div>
+          <select id="resPreset">
+            <option value="2560x800" selected>宽幅 2560 × 800</option>
+            <option value="2560x1440">电影 2560 × 1440</option>
+            <option value="3840x2160">4K 3840 × 2160</option>
+            <option value="1920x1080">全高清 1920 × 1080</option>
+            <option value="2560x720">超宽 2560 × 720</option>
+            <option value="1080x1920">竖版 1080 × 1920</option>
+            <option value="1440x1440">方图 1440 × 1440</option>
+            <option value="custom">自定义…</option>
+          </select>
+          <div class="custom-res" id="customRes" hidden>
+            <input type="number" id="resW" min="64" max="8192" step="1" value="2560" aria-label="宽度">
+            <span>×</span>
+            <input type="number" id="resH" min="64" max="8192" step="1" value="800" aria-label="高度">
+            <em>px</em>
+          </div>
+        </div>
+
+        <p class="plan-note" id="planNote">添加影片后，这里会显示采样计划。</p>
+      </section>
+
+      <section class="sec">
+        <header class="sec-head">
+          <span class="sec-num">03</span>
+          <h2>后处理</h2>
+          <button type="button" class="link" id="resetPost">重置</button>
+        </header>
+
+        <div class="field">
+          <label for="titleInput">主标题</label>
+          <input type="text" id="titleInput" class="text-input" maxlength="60" placeholder="君の名は。">
+        </div>
+        <div class="field">
+          <label for="subtitleInput">副标题</label>
+          <input type="text" id="subtitleInput" class="text-input" maxlength="60" placeholder="your name.">
+        </div>
+
+        <div class="field">
+          <div class="field-head"><label for="fontSelect">字体</label><span class="field-extra" id="fontCount"></span></div>
+          <select id="fontSelect"></select>
+          <div class="font-card">
+            <img id="fontPreview" alt="字体效果预览">
+            <div class="font-meta">
+              <span id="fontVibe"></span>
+              <span class="font-links">
+                <a id="fontDownload" href="#" target="_blank" rel="noopener" hidden>下载</a>
+                <span class="font-dir">可放入 <code>fonts/</code></span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="sizePct">字号（占画面高度）</label>
+            <output id="sizeOut">7.0%</output>
+          </div>
+          <input type="range" id="sizePct" min="1" max="22" step="0.5" value="7">
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="trackingPct">字距</label>
+            <output id="trackingOut">4%</output>
+          </div>
+          <input type="range" id="trackingPct" min="0" max="40" step="1" value="4">
+        </div>
+
+        <div class="field color-row">
+          <div class="field-head"><label for="titleColor">颜色</label></div>
+          <div class="color-line">
+            <input type="color" id="titleColor" value="#f2eee6">
+            <input type="range" id="opacity" min="0" max="100" step="1" value="100" aria-label="不透明度">
+            <output id="opacityOut">100%</output>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-head"><label>位置</label><output id="anchorOut">居中</output></div>
+          <div class="anchor-grid" id="anchorGrid">
+            <button type="button" data-anchor="top-left" aria-label="左上">左上</button>
+            <button type="button" data-anchor="top-center" aria-label="上">上</button>
+            <button type="button" data-anchor="top-right" aria-label="右上">右上</button>
+            <button type="button" data-anchor="middle-left" aria-label="左">左</button>
+            <button type="button" data-anchor="middle-center" class="active" aria-label="居中">中</button>
+            <button type="button" data-anchor="middle-right" aria-label="右">右</button>
+            <button type="button" data-anchor="bottom-left" aria-label="左下">左下</button>
+            <button type="button" data-anchor="bottom-center" aria-label="下">下</button>
+            <button type="button" data-anchor="bottom-right" aria-label="右下">右下</button>
+          </div>
+          <div class="offset-row">
+            <span>X</span><input type="range" id="offsetX" min="-40" max="40" step="1" value="0">
+            <span>Y</span><input type="range" id="offsetY" min="-40" max="40" step="1" value="0">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="noise">噪点强度</label>
+            <output id="noiseOut">12</output>
+          </div>
+          <input type="range" id="noise" min="0" max="100" step="1" value="12">
+          <div class="sub-range">
+            <span>颗粒</span>
+            <input type="range" id="grain" min="1" max="10" step="0.5" value="2" aria-label="颗粒大小">
+            <output id="grainOut">2.0</output>
+          </div>
+          <label class="check" for="mono"><input type="checkbox" id="mono" checked><span>单色颗粒</span></label>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="blur">虚化</label>
+            <output id="blurOut">0.0 px</output>
+          </div>
+          <input type="range" id="blur" min="0" max="30" step="0.5" value="0">
+        </div>
+      </section>
+
+      <div class="panel-space"></div>
+    </div>
+
+    <div class="panel-foot">
+      <div class="plan-line" id="planLine">等待添加影片</div>
+      <button type="button" class="primary" id="generate">生成色带</button>
+    </div>
+  </aside>
+
+  <section class="stage">
+    <header class="stage-head">
+      <div class="chips">
+        <div class="chip"><span>时长</span><b id="statDuration">—</b></div>
+        <div class="chip"><span>色带</span><b id="statBands">—</b></div>
+        <div class="chip"><span>间隔</span><b id="statInterval">—</b></div>
+        <div class="chip"><span>画布</span><b id="statCanvas">—</b></div>
+      </div>
+      <div class="stage-actions">
+        <span class="render-badge" id="renderBadge" hidden><i></i>合成预览</span>
+        <button type="button" class="ghost" id="export" disabled>导出 PNG</button>
+      </div>
+    </header>
+
+    <div class="stage-body" id="stageBody">
+      <div class="empty" id="emptyState">
+        <div class="empty-stripes" aria-hidden="true">
+          <i style="background:#4b5a6a"></i><i style="background:#8a6a4d"></i><i style="background:#5a5147"></i><i style="background:#2e3d4a"></i><i style="background:#7d6a58"></i><i style="background:#3c4a52"></i><i style="background:#6c5a63"></i><i style="background:#48594f"></i><i style="background:#8d7458"></i>
+        </div>
+        <h1>让光影<br>折叠成色带</h1>
+        <p>选择一部电影或一部番剧，程序沿时间轴采样画面主色调，<br>把剧情的起伏，变成可以一眼看完的颜色。</p>
+      </div>
+
+      <div class="canvas-wrap" id="canvasWrap" hidden>
+        <div class="canvas-frame" id="canvasFrame" hidden>
+          <canvas id="bandCanvas"></canvas>
+          <canvas id="fxCanvas" aria-hidden="true"></canvas>
+          <img id="finalImage" alt="最终色带">
+        </div>
+        <div class="reveal-hud" id="revealHud" aria-live="polite">
+          <span class="hud-color" id="hudColor"></span>
+          <span class="hud-hex" id="hudHex">—</span>
+          <span class="hud-sep"></span>
+          <span id="hudTime">00:00</span>
+          <span class="hud-sep"></span>
+          <span id="hudIndex">0 / 0</span>
+          <span class="hud-live" id="hudLive">逐条生成</span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="stage-foot">
+      <div class="progress"><i id="progressBar"></i></div>
+      <div class="foot-row">
+        <span id="statusText">等待开始</span>
+        <span id="percentText"></span>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
