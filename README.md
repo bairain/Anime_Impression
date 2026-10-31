@@ -2,6 +2,10 @@
 
 把电影 / 番剧的整条时间轴压缩成一张「色带海报」：逐帧提取画面主色调，按横向、纵向、斜向、同心圆、螺旋等排列方式渲染成图，再叠加片名、噪点与虚化，得到一张属于你自己的观影纪念海报。
 
+<img width="1933" height="544" alt="下载" src="https://github.com/user-attachments/assets/0f8c2d27-3c56-439e-a6c8-5b874005f51b" />
+
+<img width="2539" height="1341" alt="image" src="https://github.com/user-attachments/assets/9758dd0c-27f8-43cf-9204-08f4f13f0095" />
+
 ## 功能特性
 
 - **多视频合成**：把多部影片（或同一部的多集）按顺序合成一条时间轴采样，支持拖动排序
