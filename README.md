@@ -2,14 +2,16 @@
 
 把电影 / 番剧的整条时间轴压缩成一张「色带海报」：逐帧提取画面主色调，按横向、纵向、斜向、同心圆、螺旋等排列方式渲染成图，再叠加片名、噪点与虚化，得到一张属于你自己的观影纪念海报。
 
-<img width="1933" height="544" alt="下载" src="https://github.com/user-attachments/assets/0f8c2d27-3c56-439e-a6c8-5b874005f51b" />
-
+<img width="2560" height="720" alt="败犬女主太多了！-2560x720 (4)" src="https://github.com/user-attachments/assets/8ad3fa86-2e51-45eb-81ad-743376e4683a" />
+<img width="2560" height="720" alt="败犬女主太多了！-2560x720" src="https://github.com/user-attachments/assets/8871a4e5-62a1-4c71-997a-27ff7fc2d723" />
+<img width="2560" height="720" alt="败犬女主太多了！-2560x720 (1)" src="https://github.com/user-attachments/assets/0c1244b2-94bb-47e5-840d-650f7bcb1ab2" />
+<img width="2560" height="720" alt="败犬女主太多了！-2560x720 (2)" src="https://github.com/user-attachments/assets/3a17c28a-0b55-463d-b56c-e88749437b13" />
 <img width="2539" height="1341" alt="image" src="https://github.com/user-attachments/assets/9758dd0c-27f8-43cf-9204-08f4f13f0095" />
 
 ## 功能特性
 
 - **多视频合成**：把多部影片（或同一部的多集）按顺序合成一条时间轴采样，支持拖动排序
-- **五种排列**：横向 / 纵向 / 斜向 / 同心圆 / 螺旋（圈数可调 2–40）
+- **五种排列**：横向 / 纵向 / 斜向 / 同心圆 / 螺旋
 - **采样调节**：色带间隔（采样频率）、色带宽度、画布分辨率
 - **片头片尾跳过**：每个视频可单独或批量设置跳过前后 n 分钟，避开 OP / ED 色带重复
 - **黑边检测**：自动裁掉 letterbox 黑边，颜色更纯净
